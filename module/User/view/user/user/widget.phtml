@@ -1,0 +1,33 @@
+<?php
+$title = $widget->label;
+$id =  $widget->name;
+if($widget->position) {
+	list($top, $left, $zIndex) = explode(';', $widget->position);
+	$style = "top:{$top}px; left:{$left}px; z-index:{$zIndex}";
+}
+?>
+<div class="mdl-cell mdl-cell--4-col">
+	<h4><?php echo $this->escapeHtml($this->translate($title)); ?></h4>
+	<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <th class="mdl-data-table__cell--non-numeric"><?php echo $this->translate('User')?></th>
+	      <th class="mdl-disposable"><?php echo $this->translate('Group')?></th>
+	      <th><?php echo $this->translate('Date / Time')?></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($logs as $log) : ?>
+		<tr>
+			<td class="mdl-data-table__cell--non-numeric"><?php echo $this->escapeHtml($log->user);?></td>
+			<td class="mdl-disposable"><?php echo $this->escapeHtml($log->group);?></td>
+			<td><?php echo $log->date;?></td>
+		</tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+});
+</script>

@@ -1,0 +1,140 @@
+<?php
+
+$title = 'Armazenamento';
+$this->headTitle($this->translate($title));
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('storages', array('action' => 'index')));
+$form->prepare();
+
+?>
+
+<style type="text/css">
+h2					{ border-bottom:1px solid #DDDDDD; }
+fieldset > label	{ /*font-weight:normal;*/ font-size:12px; }
+
+.box .block	  { border:0!important; }
+.box .section { padding:0; }
+.ui-widget-header { background-color: #EDEDED; }
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { background-color: #EDEDED; }
+
+</style>
+<div id="main_container" class="main_container container_16 clearfix ui-sortable">
+
+	<div style="opacity: 1;" class="flat_area grid_16">
+		<!-- <div class="breadcrumb">
+		<?php //foreach($breadcrumb as $key => $value) : ?>
+			<a href="<?php //echo $value ?>" title="<?php //echo $key ?>"><?php //echo $key ?></a>&nbsp;»&nbsp;
+		<?php //endforeach; ?>
+		</div> -->
+		
+		<h2><?php echo $this->escapeHtml($title); ?></h2>
+		
+		<p>Arquivos armazenados pelos m&oacute;dulos do sistema.</p>
+	</div>
+	
+	<!-- <div style="opacity:1; height:455px!important;" class="box grid_16 single_datatable no_titlebar"> -->
+	
+	<?php echo $this->formElementErrors($form) ?>
+	<?php echo $this->form()->openTag($form); ?>
+	
+	<div class="box grid_16">
+		<h2 class="box_head">Gerenciador de Arquivos</h2>
+		<div class="controls">
+			<a href="#" class="grabber"></a>
+			<a href="#" class="toggle"></a>
+		</div>
+		<div class="toggle_container">
+			<div class="block">
+				<div class="section">
+					<div id="finder"></div>
+				</div>
+			</div>
+		</div>
+		<div class="button_bar clearfix" style="background:#EDEDED; clear:both;">
+			<button class="green dark send_right img_icon has_text" id="button_submit">
+				<div class="ui-icon ui-icon-check"></div>
+				<span>Cadastrar</span>
+			</button>
+			<button class="red dark send_right img_icon has_text" id="button_cancel">
+				<div class="ui-icon ui-icon-closethick"></div>
+				<span>Cancelar</span>
+			</button>
+		</div>
+	</div>
+	
+	<?php echo $this->form()->closeTag(); ?>
+	
+	
+	
+	
+	
+	
+	
+</div>
+<script type="text/javascript">
+
+$(function() {
+	reloadImage = function(id, file, message) { $('img#' + id).attr('src', file); };
+	return;
+});
+
+function createUpload() {
+
+	var frame = $('<iframe></iframe>').attr({
+								'name': 'frame-upload', 
+								'id': 'frame-upload'
+							}).css({
+								'display': 'none'
+							});
+	
+	var form = $('<form></form>').attr({
+								'method': 'post', 
+								'action': '<?php echo $this->url('settings', array('action' => 'upload-image')); ?>',
+								'id': 'form-upload', 
+								'target': 'frame-upload', 
+								'enctype': 'multipart/form-data'
+							}).css({
+								'display': 'none'
+							});
+	
+	var inputId = $('<input>').attr({'type': 'hidden', 'name': 'id', 'id': 'id-upload'});
+	var inputName = $('<input>').attr({'type': 'hidden', 'name': 'name', 'id': 'name-upload'});
+    var inputFile = $('<input>').attr({'type': 'file', 'name': 'file', 'id': 'file-upload'});
+    
+    form.append(inputId);
+    form.append(inputName);
+    form.append(inputFile);
+    
+    $('div#main_container').append(frame);
+    $('div#main_container').append(form);
+    
+	return true;
+	
+}
+
+$(document).ready(function() {
+
+	$('.date_time_picker').datetimepicker();
+
+	createUpload();
+	
+	$('input#file-upload').change(function(e) {
+		$('form#form-upload').submit();
+	});
+	
+	$('.button_upload').click(function(e) {
+		var id = $(this).parent().find('input[type=file]').attr('id');
+		var name = $(this).parent().find('input[type=file]').attr('data-setting');
+		id = id.substring(id.indexOf('-')+1);
+		name = name.substring(0, name.indexOf('-'));
+		$('input#id-upload').val(id);
+		$('input#name-upload').val(name);
+		$('input#file-upload').click();
+		return false;
+	});
+
+});
+
+</script>
+

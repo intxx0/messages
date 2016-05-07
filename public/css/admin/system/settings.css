@@ -1,0 +1,12 @@
+//.mdl-cell--4-col													{ min-height:350px; }
+.sp-container														{ border-color:#999; float:left; }
+.sp-selected														{ width:85px; height:50px; border:1px solid #999999; float:left; padding:5px; margin-left:5px; }
+.sp-selected div													{ width:83px; height:47px; border:1px solid #666666; }
+.mdl-cell--6-col, .mdl-cell--6-col-desktop.mdl-cell--6-col-desktop 	{ min-width:350px; min-height:475px; }
+.mdl-suspended														{ margin-top:-5px; }
+img.system_theme_logo_login 										{ /*background: none repeat scroll 0 0 #D0D0D0;*/ border: 1px solid #999; border-radius:3px 3px 3px 3px; float: left; height: 120px; padding: 0; width: 300px; }
+
+.time_picker_holder div.selector									{ margin-left:-6px!important; }
+div.colorpicker_field input, 
+div.colorpicker_hex input											{ height:auto!important; line-height:13px; }
+div.uploader														{ display:none!important; }

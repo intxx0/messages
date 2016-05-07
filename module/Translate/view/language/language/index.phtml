@@ -1,0 +1,193 @@
+<?php
+$title = 'Languages';
+$this->headTitle($this->translate($title));
+?>
+<style type="text/css">
+
+/* users.css */
+
+.add-icon			{ color:#999; font-size:35px; float:right; }
+.edit-icon			{ color:#999; margin:8px 5px auto auto; font-size:22px; float:left; }
+.delete-icon		{ color:#999; margin-top:6px; font-size:24px; float:left; }
+.selected-action 	{ margin:auto 10px auto 18px; float:left; }
+/*.actions			{ display:none; }*/
+.pagination			{ float:right; }
+.pagination i		{ margin:4px 5px auto 5px; float:left; }
+.pagination span	{ margin:6px 5px auto 5px; float:left; }
+.pagination .current-page	{ font-weight:bold; }
+
+/* users.css */
+
+/* mdl-dialog.css */
+
+.mdl-dialog__overlay	{ position:absolute; top:0; left:0; width:100%; height:100%; background:#000; opacity:0.3; z-index:100; }
+.mdl-dialog				{ position:absolute; top:20%; left:35%; background:#FFF; width:30%; min-width:296px; height:150px; padding:8px; z-index:101; }
+.mdl-dialog h5			{ margin-top:18px; color:#000; }
+.mdl-dialog__content	{ margin-left:18px; color:#999; }
+.mdl-dialog__actions	{ margin-top:20px; float:right; }
+
+/* mdl-dialog.css */
+
+</style>
+<div id="users-list" class="mdl-cell mdl-cell--8-col" style="margin:0 auto; margin-top:50px;">
+	<h4>
+		<?php echo $this->escapeHtml($this->translate($title)) ?>
+		<a href="<?php echo $this->url('translations', array('action' => 'add')) ?>" title="<?php echo $this->translate('Add new translation') ?>">
+			<i class="material-icons add-icon">add_circle</i>
+		</a>
+	</h4>
+	<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <th class="mdl-data-table__cell--non-numeric"><?php echo $this->translate('From')?></th>
+	      <th><?php echo $this->translate('To')?></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($translations as $translation) : ?>
+		<tr>
+			<td class="mdl-data-table__cell--non-numeric" data-id="<?php echo $translate->id ?>"><?php echo $this->escapeHtml($translation->from)?></td>
+			<td><?php echo $this->escapeHtml($translation->to)?></td>
+		</tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table>
+	<div class="actions">
+		<img src="/images/selected-action.png" title="Selected action" class="selected-action" /> 
+		<a href="" title="<?php echo $this->translate('Edit')?>" id="edit-action">
+			<i class="material-icons edit-icon">create</i>
+		</a>
+		<a href="" title="<?php echo $this->translate('Delete')?>" id="delete-action">
+			<i class="material-icons delete-icon">delete</i>
+		</a>
+	</div>
+ 	<?php
+ 	echo $this->paginationControl(
+    		$this->translations,
+     		'sliding',
+     		'/translate/translate/pagination.phtml',
+     		array(
+         		'route' => 'translations'
+     		)
+ 		);
+ 	?>	
+</div>
+<script type="text/javascript">
+
+function mdlDialog(type, title, message, listener) {
+
+	var overlay = $('<div></div>').addClass('mdl-dialog__overlay');
+	var container = $('<div></div>').attr({
+										  'id': 'confirm-dialog', 
+										  'class': 'mdl-dialog mdl-shadow--2dp', 
+										  });
+	var content = $('<div></div>').addClass('mdl-dialog__content'); 
+	var actions = $('<div></div>').addClass('mdl-dialog__actions');
+
+	var cancelButton = $('<button></button>').attr({
+		  									 	   	'id': 'confirm-dialog', 
+		  									 	   	'class': 'mdl-button mdl-js-button mdl-button--colored', 
+		  									 	   }).html('CANCEL');
+	var confirmButton = $('<button></button>').attr({
+		 											'id': 'confirm-dialog', 
+		 											'class': 'mdl-button mdl-js-button', 
+		 										   }).html('CONFIRM');
+	var okButton = $('<button></button>').attr({
+ 	   	'id': 'confirm-dialog', 
+ 	   	'class': 'mdl-button mdl-js-button mdl-button--colored', 
+ 	   }).html('OK');
+		 										   
+
+	content.append($('<h5></h5>').html(title));
+	content.append($('<p></p>').html(message));
+	container.append(content);
+
+	switch(type) {
+		case 'confirm':
+			actions.append(cancelButton);
+			actions.append(confirmButton);
+			container.append(actions);
+			cancelButton.on('click', function(e) {
+				$('#confirm-dialog').hide().remove();
+				$('.mdl-dialog__overlay').hide().remove();
+			});
+			confirmButton.on('click', listener);
+			break;
+		case 'alert':
+			actions.append(okButton);
+			container.append(actions);
+			okButton.on('click', function(e) {
+				$('#confirm-dialog').hide().remove();;
+				$('.mdl-dialog__overlay').hide().remove();
+			});
+			break;
+	}
+
+	overlay.on('click', function(e) {
+		$('#confirm-dialog').hide();
+		$(this).hide();
+	});
+
+	$('body').append(overlay).append(container);
+	
+}
+	
+$(document).ready(function() {
+	
+	//$('#edit-action').on('click', function(e) {
+	$('#edit-action').click(function(e) {
+		e.preventDefault();
+		var ids = [];
+		var checkboxes = $('.mdl-checkbox__input');
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			if(i>0) {
+				var element = $(checkboxes[i]);
+				if (element.parent().hasClass('is-checked'))
+					ids.push($(element.parent().parent().parent().find('td')[1]).attr('data-id'));
+			}
+		}
+
+		if(ids.length<1) {
+			mdlDialog('alert', 'Edit Group', 'Please select a translation to edit.', null);
+			return;
+		}
+
+		if(ids.length>1) {
+			mdlDialog('alert', 'Edit Group', 'Please select only one translation to edit.', null);
+			return;
+		}
+
+		document.location =  '<?php echo $this->url('roles', array('action' => 'edit')) ?>/' + ids[0];
+	});
+	//$('#delete-action').on('click', function(e) {
+	$('#delete-action').click(function(e) {
+		e.preventDefault();
+		var ids = [];
+		var checkboxes = $('.mdl-checkbox__input');
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			if(i>0) {
+				var element = $(checkboxes[i]);
+				if (element.parent().hasClass('is-checked'))
+					ids.push($(element.parent().parent().parent().find('td')[1]).attr('data-id'));
+			}
+		}
+
+		if(ids.length<1) {
+			mdlDialog('alert', 'Delete Translation', 'Please select a translation to delete.', null);
+			return;
+		}
+				
+		mdlDialog('confirm', 
+				  '<?php echo $this->translate('Delete Translation') ?>', 
+				  '<?php echo $this->translate('Are you sure to delete this translation?') ?>', 
+				  function() {
+			   			document.location =  '<?php echo $this->url('translations', array('action' => 'delete')) ?>/' + ids.join(',');
+				  });
+	});
+
+});
+	
+
+</script>

@@ -1,0 +1,10 @@
+.add-icon			{ color:#999; font-size:35px; float:right; }
+.export-icon		{ color:#999; font-size:32px; margin-right:10px; float:right; }
+.edit-icon			{ color:#999; margin:8px 5px auto auto; font-size:22px; float:left; }
+.delete-icon		{ color:#999; margin-top:6px; font-size:24px; float:left; }
+.selected-action 	{ margin:auto 10px auto 18px; float:left; }
+/*.actions			{ display:none; }*/
+.pagination			{ float:right; }
+.pagination i		{ margin:4px 5px auto 5px; float:left; }
+.pagination span	{ margin:6px 5px auto 5px; float:left; }
+.pagination .current-page	{ font-weight:bold; }

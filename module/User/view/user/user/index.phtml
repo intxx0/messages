@@ -1,0 +1,121 @@
+<?php
+$title = 'Users';
+$this->headTitle($this->translate($title));
+
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/users/users.css');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/mdl-dialog.css');
+$this->headScript()->appendFile($this->basePath() . '/js/admin/mdl-dialog.js');
+?>
+<div id="users-list" class="mdl-cell mdl-cell--8-col" style="margin:0 auto; margin-top:50px;">
+	<h4>
+		<?php echo $this->escapeHtml($this->translate($title)) ?>
+		<a href="<?php echo $this->url('users', array('action' => 'add')) ?>" title="<?php echo $this->translate('Add new user') ?>">
+			<i class="material-icons add-icon">add_circle</i>
+		</a>
+		<a href="<?php echo $this->url('roles') ?>" title="<?php echo $this->translate('Groups') ?>">
+			<i class="material-icons add-icon">group_work</i>
+		</a>
+	</h4>
+	<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <th class="mdl-data-table__cell--non-numeric"><?php echo $this->translate('Name')?></th>
+	      <th class="mdl-disposable"><?php echo $this->translate('E-Mail')?></th>
+	      <th class="mdl-disposable"><?php echo $this->translate('Group')?></th>
+	      <th><?php echo $this->translate('Login')?></th>
+	      <th><?php echo $this->translate('Status')?></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($users as $user) : ?>
+		<tr>
+			<td class="mdl-data-table__cell--non-numeric" data-id="<?php echo $user->id ?>"><?php echo $this->escapeHtml($user->name)?></td>
+			<td class="mdl-disposable"><?php echo $this->escapeHtml($user->email)?></td>
+			<td class="mdl-disposable"><?php echo $this->escapeHtml($user->group)?></td>
+			<td><?php echo $this->escapeHtml($user->login)?></td>
+			<td><?php echo $this->escapeHtml($user->status>0?'Ativo':'Inativo')?></td>
+		</tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table>
+	<div class="actions">
+		<img src="/images/selected-action.png" title="Selected action" class="selected-action" /> 
+		<a href="" title="<?php echo $this->translate('Edit')?>" id="edit-action">
+			<i class="material-icons edit-icon">create</i>
+		</a>
+		<a href="" title="<?php echo $this->translate('Delete')?>" id="delete-action">
+			<i class="material-icons delete-icon">delete</i>
+		</a>
+	</div>
+ 	<?php
+ 	echo $this->paginationControl(
+    		$this->users,
+     		'sliding',
+     		'/user/user/pagination.phtml',
+     		array(
+         		'route' => 'users'
+     		)
+ 		);
+ 	?>	
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	//$('#edit-action').on('click', function(e) {
+	$('#edit-action').click(function(e) {
+		e.preventDefault();
+		var ids = [];
+		var checkboxes = $('.mdl-checkbox__input');
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			if(i>0) {
+				var element = $(checkboxes[i]);
+				if (element.parent().hasClass('is-checked'))
+					ids.push($(element.parent().parent().parent().find('td')[1]).attr('data-id'));
+			}
+		}
+
+		if(ids.length<1) {
+			mdlDialog('alert', 'Edit User', 'Please select a user to edit.', null);
+			return;
+		}
+
+		if(ids.length>1) {
+			mdlDialog('alert', 'Edit User', 'Please select only one user to edit.', null);
+			return;
+		}
+
+		document.location =  '<?php echo $this->url('users', array('action' => 'edit')) ?>/' + ids[0];
+	});
+	//$('#delete-action').on('click', function(e) {
+	$('#delete-action').click(function(e) {
+		e.preventDefault();
+		var ids = [];
+		var checkboxes = $('.mdl-checkbox__input');
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			if(i>0) {
+				var element = $(checkboxes[i]);
+				if (element.parent().hasClass('is-checked'))
+					ids.push($(element.parent().parent().parent().find('td')[1]).attr('data-id'));
+			}
+		}
+
+		if(ids.length<1) {
+			mdlDialog('alert', 'Delete User', 'Please select a user to delete.', null);
+			return;
+		}
+				
+		mdlDialog('confirm', 
+				  '<?php echo $this->translate('Delete User') ?>', 
+				  '<?php echo $this->translate('Are you sure to delete this user?') ?>', 
+				  function() {
+			   			document.location =  '<?php echo $this->url('users', array('action' => 'delete')) ?>/' + ids.join(',');
+				  });
+	});
+
+});
+	
+
+</script>
+

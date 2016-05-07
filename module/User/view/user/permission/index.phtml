@@ -1,0 +1,136 @@
+<?php
+$title = 'Permissões de Acesso';
+$this->headTitle($this->translate($title));
+?>
+<style type="text/css">
+.datatable td.action	{ padding-left:20px; }
+.datatable td.action a	{ margin-left:0; float:left; }
+.dataTables_scrollBody tbody tr td	{ border-right:1px solid #D8DCDE; }
+</style>
+<div id="main_container" class="main_container container_16 clearfix ui-sortable">
+	<div style="opacity: 1;" class="flat_area grid_16">
+		<!-- <div class="breadcrumb">
+		<?php //foreach($breadcrumb as $key => $value) : ?>
+			<a href="<?php //echo $value ?>" title="<?php //echo $key ?>"><?php //echo $key ?></a>&nbsp;»&nbsp;
+		<?php //endforeach; ?>
+		</div> -->
+		
+		<h2><?php echo $this->escapeHtml($title); ?>
+		<div class="holder">
+			<button class="skin_colour send_right img_icon has_text" id="button_add" style="padding:0; height:26px;">
+					<div class="ui-icon ui-icon-plus" style="margin-top:2px;"></div>
+					<span style="padding-left:3px; padding-right:6px;">Nova Permiss&atilde;o</span>
+			</button>
+		</div>
+		</h2>
+		<p>Abaixo segue a rela&ccedil;&atilde;o das parmissões de acesso de grupos de usuários cadstrados no sistema atualmente.</p>
+		<?php if($messages) : ?>
+		<?php endif; ?>
+	</div>
+	
+	<div style="opacity: 1;" class="box grid_16 single_datatable no_titlebar">
+		<div id="dt1" class="no_margin">
+							<table style="margin-left: 0px; width: 902px; visibility: visible;" class=" datatable">
+								<thead>
+									<tr>
+										<th width="400">
+											Nome
+										</th>
+										<th width="200">
+											Status
+										</th>
+										<th width="100">
+											Opções
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($permissions as $permission) : 
+								//print_r($user); exit(); ?>
+									<tr>
+										<td><?php echo $this->escapeHtml($permission->name);?></td>
+										<td><?php echo $this->escapeHtml($permission->status=='1'?'Ativo':'Inativo');?></td>
+										<td class="action">
+									        <a href="<?php echo $this->url('permissions', array('action'=>'edit', 'id' => $permission->id));?>" title="Editar">
+									        	<div class="ui-icon ui-icon-pencil"></div>
+									        </a>
+									        <a href="<?php echo $this->url('permissions', array('action'=>'delete', 'id' => $permission->id));?>" class="delete" title="Excluir">
+									        	<div class="ui-icon ui-icon-closethick"></div>
+									        </a>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+		</div>
+</div>
+
+<div scrollleft="0" scrolltop="0" style="width: auto; min-height: 20px; height: auto;" id="dialog_delete" class="dialog_content narrow no_dialog_titlebar ui-dialog-content ui-widget-content">
+		<div style="opacity: 1;" class="block">
+			<div class="section">
+				<h1>Excluir</h1>
+				<div class="dashed_line"></div>	
+				<p>Tem certeza que deseja excluir?</p>
+			</div>
+			<div class="button_bar clearfix">
+				<button id="button_delete" class="delete_confirm dark red no_margin_bottom close_dialog div_icon has_text">
+					<div class="ui-icon ui-icon-check"></div>
+					<span>Excluir</span>
+				</button>
+				<button id="button_cancel" class="light send_right close_dialog div_icon has_text">
+					<div class="ui-icon ui-icon-closethick"></div>
+					<span>Cancelar</span>
+				</button>
+			</div>
+		</div>
+</div>
+	
+<script type="text/javascript">
+
+function dialog(id, title, width, height) {
+
+    $(id).dialog({
+        autoOpen: true,
+        resizable: !1,
+        show: "fade",
+        hide: "fade",
+        modal: !0,
+        width: "500",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        create: function () {
+            $(".dialog_content.no_dialog_titlebar").dialog("option", "dialogClass", "no_dialog_titlebar")
+        },
+        open: function () {
+            setTimeout(columnHeight, 100)
+        }
+    });	
+}
+
+$(document).ready(function() {
+	$('#button_add').bind('click', function(e) {
+		document.location = '<?php echo $this->url('permissions', array('action' => 'add')) ?>';
+	});
+	$('a.delete').click(function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		dialog('#dialog_delete', 'Confirmar Exclusão', 400, 250);
+		$('button#button_delete').click(function(e) {
+			document.location = url;
+		});
+		$('button#button_cancel').click(function(e) {
+			$('#dialog_delete').dialog('close');
+			$('#dialog_delete').dialog('destroy');
+		});
+		
+		return false;
+	});
+	$('.dataTables_scrollBody').css('height', '245px'); 
+});
+</script>

@@ -1,0 +1,297 @@
+<?php
+
+$title = 'Settings';
+$this->headTitle($this->translate($title));
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('settings', array('action' => 'index')));
+$form->prepare();
+
+$loadTimeZonePlugin = false;
+
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/system/settings.css');
+
+echo $this->form()->openTag($form);
+?>
+<div id="settings" class="mdl-cell mdl-cell--8-col" style="margin:0 auto; margin-top:50px;">
+	<h4><?php echo $this->escapeHtml($this->translate($title)) ?></h4>
+
+	<div class="mdl-tabs mdl-js-tabs">
+	  <div class="mdl-tabs__tab-bar">
+		<?php
+		$i = 1;
+		foreach($form->getFieldsets() as $fieldset) :
+			if(count($fieldset->getElements())>0) :
+		?>
+		<a href="#tabs-<?php echo $i; ?>" class="mdl-tabs__tab<?php echo $i==1?' is-active':'' ?>"><?php echo $this->translate($fieldset->getName()); ?></a>
+		<?php
+				$i++;
+			endif;
+		endforeach;
+		$i = 1;
+		foreach($form->getFieldsets() as $fieldset) :
+			if(count($fieldset->getElements())>0) :
+		?>
+	  </div>
+		<div class="mdl-tabs__panel<?php echo $i==1?' is-active':'' ?>" id="tabs-<?php echo $i; ?>">
+			<div class="mdl-grid" style="margin:0 auto; margin-top:20px; max-width:1000px; display:flex!important; align-items:center!important;">
+								<?php 
+										$i = 0;
+										$section = '';
+										foreach($fieldset->getElements() as $element) :
+											list($rel, $type) = explode('.', $element->getAttribute('rel'));
+											$name = $element->getName();
+											$name = substr($name, (strpos($name, '[')+1), ((strlen($name)-strpos($name, '['))-2));
+											$colClass	= 'col_50';
+											$labelClass = 'label_side';
+											$style 		= '';
+											if($type=='3') {
+												$style = 'height:62px;';
+											} else if($type=='6') {
+												$imageStyle = '';
+												$imageClass = $name;
+												$imageId = $name;
+												if($name=='system_theme_background') {
+													$colClass = 'col_40';
+													$style = 'height:228px;';
+												} else {
+													$style = 'padding-bottom:15px;';
+												}
+												$labelClass = '';
+											} else if($type=='7') {
+												$colClass = 'col_60';
+												$labelClass = '';
+											} else if($type=='9') {
+												$labelClass = '';
+											}
+											if($section!=$rel) :
+												$section = $rel;
+												if($i>0) :
+								?>
+								</div>
+								<?php
+												endif;
+								?>
+								<div class="mdl-cell mdl-cell--6-col">
+									<h4><?php echo $rel; ?></h4>
+															
+								<?php
+											endif;
+								?>
+											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label<?php echo $type=='6'?' is-dirty':'' ?>">
+														<?php
+															if($type=='6') :
+														?>
+															<img height="54" width="57" alt="<?php echo $element->getLabel(); ?>" src="<?php echo $element->getValue(); ?>" class="<?php echo $imageClass; ?>" id="<?php echo $imageId; ?>" style="<?php echo $imageStyle; ?>">
+															<span class="delete ui-icon ui-icon-close" id="delete-image"></span>
+															<button class="grey center img_icon has_text button_upload" id="button_upload" style="padding:0; margin-top:10px;">
+																<div class="ui-icon ui-icon-image"></div>
+																<span>Selecionar arquivo</span>
+															</button>
+														<?php
+															elseif($type=='7') :
+														?>
+														<!-- <div>
+															<div id="colorpicker-<?php echo $element->getAttribute('id'); ?>"></div>
+														</div> -->
+														  <script type="text/javascript">
+														  $(document).ready(function() {
+																$('#setting-<?php echo $element->getAttribute('id'); ?>').spectrum({
+																    color: '#<?php echo $element->getValue(); ?>', 
+																    flat: true,
+																    showInput: true, 
+																    change: function(color) {
+																    	$('#setting-<?php echo $element->getAttribute('id'); ?>').val(color.toHexString());
+																    }, 
+																});
+														  });
+														  </script>
+														<?php
+															elseif($type=='8') :
+														?>
+														<?php
+															elseif($type=='9') :
+																if(!$loadTimeZonePlugin) {
+																	$loadTimeZonePlugin = true;
+																}
+														?>
+														<div id="timezone-picker">
+														  <img id="timezone-image" src="/images/plugins/timezonepicker/map_292x146.png" width="292" height="146" usemap="#timezone-map" />
+														  <img class="timezone-pin" src="/images/plugins/timezonepicker/pin.png" style="padding-top: 4px;" />
+														  <map name="timezone-map" id="timezone-map">
+														<?php foreach ($timezones as $timezone_name => $timezone): ?>
+														<?php 	foreach ($timezone['polys'] as $coords): ?>
+														    <area data-timezone="<?php print $timezone_name; ?>" data-country="<?php print $timezone['country']; ?>" data-pin="<?php print implode(',', $timezone['pin']); ?>" data-offset="<?php print $timezone['offset']; ?>" shape="poly" coords="<?php print implode(',', $coords); ?>" />
+														<?php 	endforeach; ?>
+														<?php endforeach; ?>
+														  </map>
+														</div>
+														  <script type="text/javascript">
+														  $(document).ready(function() {
+															$('#timezone-image').timezonePicker({
+																target: '#<?php echo $element->getAttribute('id'); ?>', 
+																timezone: 'America/Sao_Paulo'
+															});
+															/*$('#timezone-detect').click(function() {
+																$('#timezone-image').timezonePicker('detectLocation');
+															});*/
+														  });
+														  </script>
+														<?php
+															endif;
+														?>
+															<?php
+																switch($type) {
+																	case '1':
+																		echo $this->formInput($element);
+																		echo $this->formLabel($element);
+																		break;
+																	case '2':
+																		echo $this->formSelect($element);
+																		echo $this->formLabel($element);
+																		break;
+																	case '3':
+																		echo $this->formLabel()->openTag($element);
+																		echo $this->formInput($element);
+																	?>
+																		<span class="mdl-checkbox__label"><?php echo $this->translate($element->getLabel()); ?></span>
+																	<?php
+																		echo $this->formLabel()->closeTag($element);
+																		break;
+																	case '4':
+																		echo $this->formInput($element);
+																		break;
+																	case '5':
+																		echo $this->formTextArea($element);
+																		break;
+																	case '6':
+																		echo $this->formInput($element);
+																		echo $this->formLabel($element);
+																		break;
+																	case '7':
+																		echo $this->formInput($element);
+																		echo $this->formLabel($element);
+																	?>
+																	<div class="sp-selected">
+																		<div style="background:#<?php echo $element->getValue() ?>;"></div>
+																	</div>
+																	<?php 
+																		break;
+																	case '8':
+																		echo $this->formInput($element);
+																		echo $this->formLabel($element);
+																		break;
+																	case '9':
+																		echo $this->formSelect($element);
+																		echo $this->formLabel($element);
+																		break;
+																	case '10':
+																		echo $this->formNumber($element);
+																		echo $this->formLabel($element);
+																		break;
+																}
+															 ?>
+												</div>
+								<?php 
+											$i++;
+										endforeach;
+								?>
+						</div>
+					</div>
+							<?php
+									$i++;
+								endif;
+							endforeach;
+							?>
+  	</div>
+  </div>
+	<div class="mdl-grid" style="margin:0 auto; margin-top:10px; max-width:1000px; display:flex!important; align-items:center!important; justify-content:center;">
+		<div class="mdl-cell mdl-cell--8-col">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="button-submit" style="float:right;">
+				  <?php echo $this->translate('Submit') ?>
+				</button>			
+		</div>
+	</div>
+  
+</div>
+<?php echo $this->form()->closeTag($form); ?>
+<script type="text/javascript">
+$(function() {
+	reloadImage = function(id, file, message) { $('img#' + id).attr('src', file); };
+	return;
+});
+function createUpload() {
+
+	var frame = $('<iframe></iframe>').attr({
+								'name': 'frame-upload', 
+								'id': 'frame-upload'
+							}).css({
+								'display': 'none'
+							});
+	
+	var form = $('<form></form>').attr({
+								'method': 'post', 
+								'action': '<?php echo $this->url('settings', array('action' => 'upload-image')); ?>',
+								'id': 'form-upload', 
+								'target': 'frame-upload', 
+								'enctype': 'multipart/form-data'
+							}).css({
+								'display': 'none'
+							});
+	
+	var inputId = $('<input>').attr({'type': 'hidden', 'name': 'id', 'id': 'id-upload'});
+	var inputName = $('<input>').attr({'type': 'hidden', 'name': 'name', 'id': 'name-upload'});
+    var inputFile = $('<input>').attr({'type': 'file', 'name': 'file', 'id': 'file-upload'});
+    
+    form.append(inputId);
+    form.append(inputName);
+    form.append(inputFile);
+    
+    $('div#main_container').append(frame);
+    $('div#main_container').append(form);
+    
+	return true;
+	
+}
+$(document).ready(function() {
+
+	//alert($('input[type=file]').parent().html());
+	$('input[type=file]').parent().addClass('is-dirty');
+
+	$('.mdl-colorpicker').spectrum({
+		preferredFormat: 'hex', 
+	    //color: "#f00", 
+	    flat: true,
+	    showButtons: false, 
+	    //showInput: true, 
+	    move: function(color) {
+	    	$(this).val(color.toHexString());
+	    	$(this).parent().find('.sp-selected div').css({'background': color.toHexString()});
+	    }, 
+	});
+	
+	createUpload();
+	
+	$('input#file-upload').change(function(e) {
+		$('form#form-upload').submit();
+	});
+	
+	$('.button_upload').click(function(e) {
+		var id = $(this).parent().find('input[type=file]').attr('id');
+		var name = $(this).parent().find('input[type=file]').attr('data-setting');
+		id = id.substring(id.indexOf('-')+1);
+		name = name.substring(0, name.indexOf('-'));
+		$('input#id-upload').val(id);
+		$('input#name-upload').val(name);
+		$('input#file-upload').click();
+		return false;
+	});
+
+	$('#button-submit').bind('click', function(e) {
+		$('form#setting').submit();
+	});
+
+});
+
+</script>
+

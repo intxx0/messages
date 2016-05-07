@@ -1,0 +1,5 @@
+.mdl-dialog__overlay	{ position:absolute; top:0; left:0; width:100%; height:100%; background:#000; opacity:0.3; z-index:100; }
+.mdl-dialog				{ position:absolute; top:20%; left:35%; background:#FFF; width:30%!important; min-width:296px; height:208px!important; padding:8px; z-index:101; }
+.mdl-dialog h5			{ margin-top:18px; color:#000; }
+.mdl-dialog__content	{ margin-left:18px; color:#999; }
+.mdl-dialog__actions	{ margin-top:20px; float:right; }

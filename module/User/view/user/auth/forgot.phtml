@@ -1,0 +1,60 @@
+<?php
+$this->headTitle($this->translate('Password Recovery'));
+
+$form = $this->forgotForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('forgot'));
+$form->setAttribute('method', 'post');
+$form->setAttribute('class', 'validate_form');
+$form->setAttribute('novalidate', 'novalidate');
+?>
+				<div class="page-content">
+					<?php echo $this->form()->openTag($form) ?>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="padding:0;">
+						<img src="/images/login/<?php echo $logoImage ?>" alt="Extend Tecnologia" />
+						<?php echo $this->formElementErrors($form->get('login')) ?>
+						<?php if(count($flashMessages)>0) : ?>
+						<p class="alert">
+							<?php echo implode('<br />', $flashMessages) ?>
+						</p>
+						<?php else : ?>
+						<!-- <p class="message">
+							Por favor digite seu login e senha para continuar
+						</p> -->
+						<?php endif ?>
+					</div>
+			        <?php if ($this->redirect): ?>
+			        <input type="hidden" name="redirect" value="<?php echo $this->redirect ?>" />
+			        <?php endif ?>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="padding-top: 0px;">
+						<p>Please enter your login and e-mail, you will receive a link to recovery your password.</p>
+					</div>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						<?php
+						echo $this->formInput($form->get('login'));
+						echo $this->formLabel()->openTag($form->get('login'));
+						echo $this->translate($form->get('login')->getLabel());
+						echo $this->formLabel()->closeTag($form->get('login'));
+						?>
+					</div>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						<?php
+						echo $this->formInput($form->get('email'));
+						echo $this->formLabel()->openTag($form->get('email'));
+						echo $this->translate($form->get('email')->getLabel());
+						echo $this->formLabel()->closeTag($form->get('email'));
+						?>
+					</div>
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="button-submit" style="position:relative; float:right;">
+				  			<?php echo $this->translate('Submit') ?>
+						</button>
+					</div>
+					<?php echo $this->form()->closeTag() ?>
+				</div>
+				<script type="text/javascript">
+				$(document).ready(function() {
+					$('#username_field').focus();
+				});
+				</script>
+

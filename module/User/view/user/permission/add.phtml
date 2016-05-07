@@ -1,0 +1,87 @@
+<?php
+$title = 'Novo Grupo de Usuários';
+$this->headTitle($this->translate($title));
+?>
+<?php
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('roles', array('action' => 'add')));
+$form->prepare();
+
+?>
+<style type="text/css">
+img.photo_profile {
+    background: none repeat scroll 0 0 #D0D0D0;
+    border: 1px solid #CCC;
+    border-radius: 3px 3px 3px 3px;
+    float: left;
+    height: 44px;
+    padding: 0;
+    width: 47px;
+}
+div.selector	{ width:250px; }
+</style>
+<div id="main_container" class="main_container container_16 clearfix ui-sortable">
+				<div style="opacity: 1;" class="flat_area grid_16">
+					<h2>Grupos de Usu&aacute;rios</h2>
+					<p>Grupos de usuários para permissões de acesso ao sistema</p>
+					
+					<?php echo $this->formElementErrors($form) ?>
+					
+				</div>
+				<div class="clear_fix"></div>
+				<div style="opacity: 1;" class="box grid_16">
+					<h2 class="box_head">Novo Grupo de Usu&aacute;rios</h2>
+					<div class="controls">
+						<a href="#" class="grabber"></a>
+						<a href="#" class="toggle"></a>
+					</div>
+					<div class="toggle_container">
+						<?php echo $this->form()->openTag($form); ?>
+						<?php echo $this->formInput($form->get('id')) ?>
+						<div style="opacity: 1;" class="block">
+							<h2 class="section">Dados Gerais</h2>
+
+							<div class="columns clearfix">							
+								<fieldset class="label_side top">
+									<?php echo $this->formLabel($form->get('name')) ?>
+									<div class="clearfix">
+										<?php echo $this->formInput($form->get('name')) ?>
+									</div>
+								</fieldset>
+								<fieldset class="label_side top">
+									<?php echo $this->formLabel($form->get('status')) ?>
+									<div class="clearfix">
+										<?php echo $this->formSelect($form->get('status')) ?>
+									</div>
+								</fieldset>
+							</div>
+							<div class="button_bar clearfix">
+								<button class="green dark send_right img_icon has_text" id="button_submit">
+									<div class="ui-icon ui-icon-check"></div>
+									<span>Cadastrar</span>
+								</button>
+								<button class="red dark send_right img_icon has_text" id="button_cancel">
+									<div class="ui-icon ui-icon-closethick"></div>
+									<span>Cancelar</span>
+								</button>
+							</div>
+						</div>
+						<?php echo $this->form()->closeTag(); ?>
+					</div>
+				</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#button_cancel').bind('click', function(e) {
+		document.location = '<?php echo $this->url('users') ?>';
+	});
+	$('#button_submit').bind('click', function(e) {
+		$('form#user').submit();
+	});
+	$('#button_upload').bind('click', function(e) {
+		$('input#file').click();
+	});
+	$('input[name=name]').focus();
+});
+</script>

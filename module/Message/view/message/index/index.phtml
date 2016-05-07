@@ -1,0 +1,79 @@
+<?php
+$title = 'Message Board';
+$this->headTitle($this->translate($title));
+
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/mdl-dialog.css');
+$this->headScript()->appendFile($this->basePath() . '/js/admin/mdl-dialog.js');
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('roles', array('action' => 'add')));
+$form->prepare();
+
+?>
+<style type="text/css">
+.grid-centered   { margin:0 auto; margin-top:20px; max-width:1000px; display:flex!important; align-items:center!important; justify-content:center; }
+</style>
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formInput($form->get('id')) ?>
+	<div class="mdl-grid grid-centered">
+		<div class="mdl-cell mdl-cell--8-col">
+			<h4><?php echo $this->escapeHtml($this->translate($title)) ?></h4>
+			<?php echo $this->formInput($form->get('id')) ?>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:650px;">
+				<?php echo $this->formInput($form->get('message')) ?>
+				<?php echo $this->formLabel($form->get('message')) ?>
+			</div>
+		</div>
+        <ul id="message-board" class="mdl-list" style="width:600px; float:left;"></ul>
+</div>
+<script type="text/javascript">
+
+var payload = [];
+
+function rest_api(method, url, data) {
+
+	var template = '<li class="mdl-list__item mdl-list__item--three-line">' +
+    '<span class="mdl-list__item-primary-content">' + 
+    '<i class="material-icons mdl-list__item-avatar">person</i>' + 
+    '<span>${user}</span>' + 
+    '<span class="mdl-list__item-text-body">${message}</span>' + 
+    '</span>' + 
+    '<span class="mdl-list__item-secondary-content" style="font-size:12px; text-align:right;">${date}<br />${time}</span></li>'; 
+
+	$.ajax({
+		method: method,
+		url: url, 
+		data: data, 
+	}).then(function(response) {
+		if(response.status=='success') {
+    		$.each(response.results, function(i, e) {
+    			if($.inArray(e['id'], payload)<0) {
+    				if(e['id']!=undefined) {
+        			    var t = template;
+        			    t = t.replace('${message}', e['message']);
+        			    t = t.replace('${user}', e['user']);
+        			    t = t.replace('${date}', e['date']);
+        			    t = t.replace('${time}', e['time']);
+        			    if(payload.length<1)
+        			        $('ul#message-board').append(t);
+        			    else
+        			    	$(t).insertBefore('ul#message-board li:first');
+        			    payload.push(e['id']);
+    				}
+    			}
+    		});
+		}		
+	});
+	
+}
+
+$(document).ready(function() {
+	setInterval("rest_api('get', '/admin/messages/api', null);", 3000);
+	$('#form-message').on('submit', function(e) {
+		e.preventDefault();
+		rest_api('post', '/admin/messages/api', 'message=' + $('#message').val());
+		$('#message').val('');
+	});
+	$('#message').focus();
+});
+</script>

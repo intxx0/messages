@@ -1,0 +1,136 @@
+<?php echo $this->doctype(); ?>
+
+<html>
+  <head>
+	    <!-- Material Design Lite -->
+	    <!-- <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+	    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css"> -->
+	    <!-- Material Design icon font -->
+	    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+		<meta charset="utf-8">
+		
+		<?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/x-icon', 'href' => $this->basePath() . '/img/favicon.ico')) ?>
+
+        <?php echo $this->headTitle('Extend R7')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headMeta()->appendName('description', 'Extend R7')
+        							->appendName('author', 'Extend Tecnologia')
+        							->appendName('robots', 'noindex,nofollow')
+        							->appendName('viewport', 'width=device-width; initial-scale=1; maximum-scale=1;')
+        							->appendName('apple-mobile-web-app-capable', 'yes')
+        							->appendName('apple-mobile-web-app-status-bar-style', 'black-translucent') ?>
+
+        <?php /*echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'))
+        				->headLink(array('rel' => 'apple-touch-icon', 'href' => $this->basePath() . 'images/interface/iOS_icon.png'))*/ ?>
+
+        <?php echo $this->headScript()//->appendFile('https://storage.googleapis.com/code.getmdl.io/1.0.5/material.js', 'text/javascript')
+        							  //->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', 'text/javascript')
+        							  //->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js', 'text/javascript')
+        							  //->appendFile('https://storage.googleapis.com/code.getmdl.io/1.0.5/material.js', 'text/javascript');
+        							  //->appendFile($this->basePath() . '/js/jquery/1.5.2/jquery.min.js', 'text/javascript')
+                                      ->appendFile('https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js', 'text/javascript')
+        							  //->appendFile($this->basePath() . '/js/material/1.0.5/material.js', 'text/javascript')
+                                      ->appendFile('https://storage.googleapis.com/code.getmdl.io/1.1.3/material.js', 'text/javascript')
+							          ->appendFile($this->basePath() . '/js/timezonepicker/jquery.maphilight.min.js', 'text/javascript')
+							          ->appendFile($this->basePath() . '/js/timezonepicker/jquery.timezone-picker.js', 'text/javascript')
+							          ->appendFile($this->basePath() . '/js/spectrum.js', 'text/javascript')
+							          ->appendFile($this->basePath() . '/js/highlight/8.8.0/highlight.min.js', 'text/javascript')
+        
+        							  ->appendFile($this->basePath() . '/js/mdl-datepicker.js', 'text/javascript')
+        							  ->appendFile($this->basePath() . '/js/moment-locales.js', 'text/javascript');
+
+        							  //->appendFile($this->basePath() . '/js/material-timepicker/timepicker.js', 'text/javascript'); ?>
+        
+        <?php echo $this->headLink()//->appendStylesheet('https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css')
+                        //->appendStylesheet('https://fonts.googleapis.com/icon?family=Material+Icons')
+        				->appendStylesheet($this->basePath() . '/css/spectrum.css')
+        				//->appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js')
+        				
+        				//->appendStylesheet($this->basePath() . '/css/material/1.0.5/material.indigo-pink.min.css')
+                        ->appendStylesheet('https://storage.googleapis.com/code.getmdl.io/1.1.3/material.indigo-pink.min.css')
+        				->appendStylesheet($this->basePath() . '/css/material/1.0.5/material-icons.css')
+        				
+        				->appendStylesheet($this->basePath() . '/css/material-timepicker/timepicker.css')
+        				->appendStylesheet($this->basePath() . '/css/admin/system/admin.css');
+                        //->appendStylesheet($this->basePath() . '/css/users/login.css'); ?>
+        							  
+		<?php
+		$children = $this->viewModel()->getCurrent()->getChildren();
+		$child = $children[0];
+		?>
+		</head>
+  <body>
+    <!-- Uses a header that scrolls with the text, rather than staying
+      locked at the top -->
+    <div class="mdl-layout mdl-js-layout">
+      <header class="mdl-layout__header mdl-layout__header--scroll">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title"><?php echo $this->title ?></span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation -->
+          <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="#" id="user-button"><?php echo $this->user['name']; ?></a>
+          </nav>
+		  <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
+		  	<i class="material-icons">more_vert</i>
+		  </button>
+		  <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-right">
+		    <li class="mdl-menu__item"><a href="<?php echo $this->url('users', array('action' => 'edit', 'id' => $this->user['id'])); ?>" title="<?php echo $this->translate('Profile') ?>"><?php echo $this->translate('Profile') ?></a></li>
+		    <li class="mdl-menu__item"><a href="<?php echo $this->url('logout'); ?>" title="<?php echo $this->translate('Logout') ?>"><?php echo $this->translate('Logout') ?></a></li>
+		  </ul>          
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title"><?php echo $this->title ?></span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="<?php echo $this->url('dashboard') ?>">
+            	<i role="presentation" class="mdl-color-text--blue-grey-400 material-icons">dashboard</i>
+            	Dashboard
+            </a>
+            <a class="mdl-navigation__link" href="<?php echo $this->url('users') ?>">
+            	<i role="presentation" class="mdl-color-text--blue-grey-400 material-icons">people</i>
+            	Users
+            </a>
+            <a class="mdl-navigation__link" href="">
+            	<i role="presentation" class="mdl-color-text--blue-grey-400 material-icons">extension</i>
+            	Modules
+            </a>
+            <a class="mdl-navigation__link" href="<?php echo $this->url('settings') ?>">
+            	<i role="presentation" class="mdl-color-text--blue-grey-400 material-icons">settings</i>
+            	Settings
+            </a>
+            <a class="mdl-navigation__link" href="<?php echo $this->url('system-logs') ?>">
+            	<i role="presentation" class="mdl-color-text--blue-grey-400 material-icons">list</i>
+            	Logs
+            </a>
+            <a class="mdl-navigation__link" href="<?php echo $this->url('logout') ?>">
+            	<i role="presentation" class="mdl-color-text--blue-grey-400 material-icons">power_settings_new</i>
+            	Logout
+            </a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+       		<?php echo $this->content; ?>
+        </div>
+      </main>
+    </div>
+		<?php echo $this->inlineScript() ?>
+	    <script type="text/javascript">
+	    $(document).ready(function() {
+	        $('#user-button').click(function(e) {
+	            $('#demo-menu-lower-right').click();
+	        });
+	        $(window).resize(function() {
+		        if($(window).width()<760)
+		        	$('.mdl-disposable').hide();
+		        else
+		        	$('.mdl-disposable').show();
+	        });
+	        $(window).trigger('resize');
+	    });
+	    </script>
+	</body>
+</html>
+

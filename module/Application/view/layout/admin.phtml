@@ -1,0 +1,104 @@
+<?php echo $this->doctype(); ?>
+<!--[if lt IE 7]> <html lang="en-us" class="no-js ie6"> <![endif]-->
+<!--[if IE 7]>    <html lang="en-us" class="no-js ie7"> <![endif]-->
+<!--[if IE 8]>    <html lang="en-us" class="no-js ie8"> <![endif]-->
+<!--[if IE 9]>    <html lang="en-us" class="no-js ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en-us" class="no-js"> <!--<![endif]-->
+	
+<head>
+		<meta charset="utf-8">
+
+        <?php echo $this->headTitle('Extend R6 '. $this->translate('Início'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headMeta()->appendName('description', 'Extend R6')
+        							->appendName('author', 'Extend Tecnologia')
+        							->appendName('robots', 'noindex,nofollow')
+        							->appendName('viewport', 'width=device-width; initial-scale=1; maximum-scale=1;')
+        							->appendName('apple-mobile-web-app-capable', 'yes')
+        							->appendName('apple-mobile-web-app-status-bar-style', 'black-translucent') ?>
+
+        <?php /*echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'))
+        				->headLink(array('rel' => 'apple-touch-icon', 'href' => $this->basePath() . 'images/interface/iOS_icon.png'))*/ ?>
+
+        <?php echo $this->headLink()->appendStylesheet($this->basePath() . '/css/reset.css')
+                        //->appendStylesheet('http://fonts.googleapis.com/css?family=Open+Sans:400,700')
+        				->appendStylesheet($this->basePath() . '/fonts/OpenSans.woff')
+        				->appendStylesheet($this->basePath() . '/css/plugins/all/plugins.css')
+        				->appendStylesheet($this->basePath() . '/css/all.css')
+        				->appendStylesheet($this->basePath() . '/css/themes/layout.css')
+        				->appendStylesheet($this->basePath() . '/css/themes/nav.css')
+                        ->appendStylesheet($this->basePath() . '/css/themes/skin.css')
+                        ->appendStylesheet($this->basePath() . '/css/themes/theme.css')
+                        ->appendStylesheet($this->basePath() . '/css/themes/bg.css')
+        				->appendStylesheet($this->basePath() . '/css/colours.css')
+        				->appendStylesheet($this->basePath() . '/js/elfinder/css/elfinder.min.css') ?>
+		
+        <?php echo $this->headScript()->appendFile($this->basePath() . '/js/plugins-min.js', 'text/javascript')
+        							  ->appendFile($this->basePath() . '/js/all-min.js', 'text/javascript')
+        							  ->appendFile($this->basePath() . '/js/elfinder/elfinder.min.js', 'text/javascript') ?>
+
+		</head>
+	<body>
+		<header>
+			<div id="header-content">
+				<a href="#" title="Início">
+					<img src="images/interface/extend-logo.png" alt="Extend Tecnologia" />
+				</a>
+				<div id="user-info">
+					<img src="images/users/guest-user-4.png" alt="Guest User" width="57" height="54" />
+					<p id="user-info-name">&nbsp;John Smith</p>
+					<p id="user-info-role">&nbsp;Administrator</p>
+					<div id="user-info-links">
+						<a href="#" title="Perfil">perfil</a> | 
+						<a href="<?php echo $this->url('logout') ?>" title="Sair">sair</a>
+					</div>
+				</div>
+			</div>
+		</header>
+		<nav>
+			<ul id="nav">
+				<li>
+					<a href="" alt="Usu�rios"><img src="images/icons/small/white/users.png" alt="Usu�rios" /> Usu&aacute;rios</a>
+					<ul>
+						<li><a href="" alt="Cadastrar"><img src="images/icons/small/white/admin_user.png" alt="Novo" />Novo</a></li>
+						<li><a href="" alt="Listagem"><img src="images/icons/small/white/list.png" alt="Listagem" />Listagem</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="" alt="Módulos"><img src="images/icons/small/white/blocks_images.png" alt="Módulos" /> M&oacute;dulos</a>
+				</li>
+				<li>
+					<a href="" alt="Configurações"><img src="images/icons/small/white/cog.png" alt="Sistema" /> Sistema</a>
+					<ul>
+						<li><a href="" alt="Configurações"><img src="images/icons/small/white/settings.png" alt="Configurações" /> Configura&ccedil;&otilde;es</a></li>
+						<li><a href="" alt="Relatórios"><img src="images/icons/small/white/book.png" alt="Relat&oacute;rios" />Relat&oacute;rios</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="" alt="Sair"><img src="images/icons/small/white/bended_arrow_right.png" alt="Sair" /> Sair</a>
+				</li>
+			</ul>
+		</nav>
+		<div id="pjax">
+			<div id="wrapper" data-adminica-nav-top="2" data-adminica-nav-inner="1">
+				<?php echo $this->content; ?>
+			</div>
+		</div>
+		<footer>
+			<p>Google, Analytics e Youtube s&atilde;o marcas registradas da Google, Inc. <a href="http://www.google.com.br/permissions/guidelines.html" title="Termos de uso" target="_blank">Termos de uso</a>.<br />
+			&copy; 2012 <a href="http://www.extendtecnologia.com.br" title="Extend Tecnologia" target="_blank">Extend Tecnologia</a></p>
+		</footer>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$('ul#nav li').mouseover(function(e) {
+				$(this).find('ul').show();
+			});
+			$('ul#nav li').mouseout(function(e) {
+				$(this).find('ul').hide();
+			});
+		});
+		$('div#wrapper').css('min-height', $(document).height() - ($('header').height()+$('nav').height()+$('footer').height()+60));
+		</script>
+		<?php echo $this->inlineScript() ?>
+	</body>
+</html>
+

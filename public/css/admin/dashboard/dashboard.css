@@ -1,0 +1,7 @@
+h3					{ margin:0; padding-bottom:10px; background:#EEEEEE; }
+a.features img 		{ margin-top:8px!important; }
+div.draggable		{ /*position:absolute;*/ background:transparent; }
+div.draggable h3 	{ background:transparent; }
+
+/*.mdl-cell--4-col	{ min-width:383px; }*/
+.mdl-cell--4-col	{ min-width:328px; }

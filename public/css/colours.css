@@ -1,0 +1,82 @@
+
+.grad_black, button.black, .button.black, .alert_black, .calendar_black {
+    background-color: #4C5766;
+    border-color: #313841;
+}
+.grad_black_reverse, button.black:hover, .button.black:hover, .alert_black:hover, .calendar_black_hover {
+    background-color: #313841;
+}
+.grad_blue, button.blue, .button.blue, .alert_blue, .calendar_blue {
+    background-color: #1C5EA0;
+    border-color: #064792;
+}
+.grad_blue_reverse, button.blue:hover, .button.blue:hover, .alert_blue:hover, .calendar_blue:hover {
+    background-color: #064792;
+}
+.grad_red, button.red, .button.red, .alert_red, .alert_circle.alert_red, .calendar_red {
+    background-color: #9E253B;
+    border: 1px solid #7C1F30;
+}
+.grad_red_reverse, button.red:hover, .button.red:hover, .alert_red:hover, .calendar_red:hover {
+    background-color: #7C1F30;
+}
+.grad_orange, button.orange, .button.orange, .alert_orange, .alert_circle.alert_orange, .calendar_orange {
+    background-color: #F98D35;
+    border: 1px solid #E46F23;
+}
+.grad_orange_reverse, button.orange:hover, .button.orange:hover, .alert_orange:hover, .calendar_orange:hover {
+    background-color: #E46F23;
+}
+.grad_brown, button.brown, .button.brown, .alert_brown {
+    background-color: #53453E;
+    border: 1px solid #3B2E28;
+}
+.grad_brown_reverse, button.brown:hover, .button.brown:hover, .alert_brown:hover, .calendar_browne:hover {
+    background-color: #3B2E28;
+}
+.grad_green, button.green, .button.green, .alert_green, .calendar_green {
+    background-color: #3D8336;
+    border: 1px solid #277423;
+}
+.grad_green_reverse, button.green:hover, .button.green:hover, .alert_green:hover, .calendar_green:hover {
+    background-color: #277423;
+}
+.grad_magenta, button.magenta, .button.magenta, .alert_magenta, .calendar_magenta {
+    background-color: #9B6CA6;
+    border: 1px solid #8D579A;
+}
+.grad_magenta_reverse, button.magenta:hover, .button.magenta:hover, .alert_magenta:hover, .calendar_magenta:hover {
+    background-color: #8D579A;
+}
+.grad_navy, button.navy, .button.navy, .alert_navy, .calendar_navy {
+    background-color: #2B4356;
+    border: 1px solid #122B45;
+}
+.grad_navy_reverse, button.navy:hover, .button.navy:hover, .alert_navy:hover, .calendar_navy:hover {
+    background-color: #122B45;
+}
+.grad_grey_dark, button.grey, .button.grey, .alert_grey, .calendar_grey, .calendar_grey > .fc-event-skin {
+    background: none repeat scroll 0 0 #959BA2;
+    border: 1px solid #6A737F;
+}
+.grad_grey_dark_reverse, button.grey:hover, .button.grey:hover, .alert_grey:hover, .calendar_grey:hover {
+    background: none repeat scroll 0 0 #6A737F;
+}
+.grad_grey, button.light, .button.light, .alert_light:hover, .light .box_head {
+    background-color: #E6ECEF;
+    border-color: #959BA2;
+    color: #333333;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+.grad_grey_reverse, button.light:hover, .button.light:hover, .alert_light:hover {
+    background-color: #D0D6DA;
+}
+.grad_white, button.white, .button.white, .alert_white:hover, .white .box_head, .gallery li a {
+    background-color: #F4F7F9;
+    border-color: #959BA2;
+    color: #333333;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+.grad_white_reverse, button.white:hover, .button.white:hover, .alert_white:hover, .gallery li:hover a {
+    background-color: #E8ECEE;
+}

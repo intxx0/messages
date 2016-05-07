@@ -1,0 +1,15 @@
+.add-icon				{ color:#999; font-size:35px; float:right; }
+.edit-icon				{ color:#999; margin:8px 5px auto auto; font-size:22px; float:left; }
+.delete-icon			{ color:#999; margin-top:6px; font-size:24px; float:left; }
+.selected-action 		{ margin:auto 10px auto 18px; float:left; }
+/*.actions				{ display:none; }*/
+.pagination				{ float:right; }
+.pagination i			{ margin:4px 5px auto 5px; float:left; }
+.pagination span		{ margin:6px 5px auto 5px; float:left; }
+.pagination .current-page	{ font-weight:bold; }
+
+.image-container		{ position:relative; width:110px; height:100px; }
+img.photo_profile 		{ background: none repeat scroll 0 0 #D0D0D0; border: 1px solid #999; border-radius: 3px 3px 3px 3px; float: left; height: 180px; padding: 0; width: 183px; margin:10px auto auto 60px; }
+span.delete-image		{ position:absolute; top:80px; left:100px; opacity:0.6; cursor:pointer; display:none; }
+span.upload-image		{ position:absolute; top:172px; left:217px; opacity:0.3; cursor:pointer; }
+span.upload-image:hover	{ opacity:0.6; }

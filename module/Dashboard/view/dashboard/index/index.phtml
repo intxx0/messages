@@ -1,0 +1,38 @@
+<?php
+$title = 'Dashboard';
+$this->headTitle($this->translate($title));
+
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/dashboard/dashboard.css');
+?>
+<div class="mdl-grid" id="widgets-container" style="display:flex!important; align-items:center!important; justify-content:center;">
+</div>
+<script type="text/javascript">
+
+function xmlhttp(url, id) {
+	
+	$.ajax({type: 'GET',
+		url: url,
+		data: null,
+		dataType: 'html',
+		scriptCharset: 'iso-8859-1',
+		contentType: 'text/html; charset=utf-8',
+		success: function(content) {
+			$('#widgets-container').append(content);
+			eval($(content).find('script'));
+			$(window).trigger('resize');
+		},
+		error: function(content) {
+			$('#main_container').append(content);
+		}
+	});
+	return;
+
+}
+
+$(document).ready(function() {
+	<?php foreach($widgets as $widget) : ?>
+	xmlhttp('<?php echo $this->url($widget['route'], array('action' => $widget['action'])); ?>', '#<?php echo $widget['name'] ?>');
+	<?php endforeach; ?>
+});
+</script>
+	

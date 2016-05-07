@@ -1,0 +1,140 @@
+<?php
+
+$title = 'Widgets';
+$this->headTitle($this->translate($title));
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('settings', array('action' => 'index')));
+$form->prepare();
+
+$loadTimeZonePlugin = false;
+
+?>
+
+<style type="text/css">
+h2					{ border-bottom:1px solid #DDDDDD; }
+fieldset > label	{ /*font-weight:normal;*/ font-size:12px; }
+
+img.system_theme_logo_login {
+    background: none repeat scroll 0 0 #D0D0D0;
+    border: 1px solid #999;
+    border-radius: 3px 3px 3px 3px;
+    float: left;
+    height: 60px;
+    padding: 0;
+    width: 300px;
+}
+img.system_theme_logo_admin {
+    background: none repeat scroll 0 0 #D0D0D0;
+    border: 1px solid #999;
+    border-radius: 3px 3px 3px 3px;
+    float: left;
+    height: 60px;
+    padding: 0;
+    width: 300px;
+}
+img.system_theme_background {
+    background: url('/images/backgrounds/no-image.png') no-repeat scroll 0 0 #D0D0D0;
+    border: 1px solid #999;
+    border-radius: 3px 3px 3px 3px;
+    float: left;
+    /*height: 175px;*/
+	height: 140px;
+    padding: 0;
+    width: 232px;
+}
+
+span.delete	{
+	position:absolute;
+	top:6px;
+	left:194px;
+	opacity:0.6;
+	cursor:pointer;
+	display:none;
+}
+
+div.side_holder ul li a { font-weight:bold!important; }
+
+.time_picker_holder div.selector	{ margin-left:-6px!important; }
+div.colorpicker_field input, 
+div.colorpicker_hex input			{ height:auto!important; }
+div.uploader						{ display:none!important; }
+
+</style>
+<div id="main_container" class="main_container container_16 clearfix ui-sortable">
+	<div style="opacity: 1;" class="flat_area grid_16">
+		<!-- <div class="breadcrumb">
+		<?php //foreach($breadcrumb as $key => $value) : ?>
+			<a href="<?php //echo $value ?>" title="<?php //echo $key ?>"><?php //echo $key ?></a>&nbsp;»&nbsp;
+		<?php //endforeach; ?>
+		</div> -->
+		
+		<h2><?php echo $this->escapeHtml($title); ?></h2>
+		
+		<p>Habilite ou desabilite widgets da dashboard do sistema.</p>
+	</div>
+	
+	<!-- <div style="opacity:1; height:455px!important;" class="box grid_16 single_datatable no_titlebar"> -->
+	<div style="opacity:1; height:auto;" class="box grid_16 single_datatable no_titlebar">
+		<?php echo $this->formElementErrors($form) ?>
+		<?php echo $this->form()->openTag($form); ?>
+		<?php
+		$i = 1;
+		foreach($form->getFieldsets() as $fieldset) :
+			if(count($fieldset->getElements())>0) :
+				$file = $fieldset->getAttribute('data-image');
+		?>
+		<div class="box grid_8 widget" style="opacity: 1; float: left;">
+			<h2 class="box_head"><?php echo $fieldset->getLabel() ?></h2>
+			<div class="toggle_container">
+				<div class="block">
+					<div class="section">
+						<img height="54" width="57" alt="<?php //echo $element->getLabel(); ?>" src="<?php echo !$file?'/images/widgets/no-image.png':'/images/widgets/' . $file; ?>" class="<?php //echo $imageClass; ?>" id="<?php //echo $imageId; ?>" style="<?php //echo $imageStyle; ?>">
+						<div class="jqui_checkbox ui-buttonset widget-option" id="pjax_switch">
+							<!-- <input name="dynamic_switch" id="dynamic_on" type="radio"><label for="dynamic_on">Sim</label>
+							<input name="dynamic_switch" id="dynamic_off" checked="checked" type="radio"><label for="dynamic_off">Não</label> -->
+							<div class="widget-description">
+								<p><?php echo $fieldset->getAttribute('data-description') ?></p>
+							</div>
+							<div class="widget-button">
+								<?php 
+									foreach($fieldset->getElements() as $element) :
+										//$name = $element->getName();
+										//$name = substr($name, (strpos($name, '[')+1), ((strlen($name)-strpos($name, '['))-2));
+										//echo $this->formRadio($element);
+								?>
+										<input name="<?php echo $element->getName() ?>" id="<?php echo $element->getAttribute('id') ?>_on" class="dynamic"<?php echo $element->isChecked()?' checked="checked"':''; ?> type="radio" rel="<?php echo $element->getAttribute('rel') ?>" value="1"><label for="<?php echo $element->getAttribute('id') ?>_on">Sim</label>
+										<input name="<?php echo $element->getName() ?>" id="<?php echo $element->getAttribute('id') ?>_off" class="dynamic"<?php echo !$element->isChecked()?' checked="checked"':''; ?> type="radio" rel="<?php echo $element->getAttribute('rel') ?>" value="0"><label for="<?php echo $element->getAttribute('id') ?>_off">Não</label>
+								<?php 			
+									endforeach;
+								?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php
+			endif;
+			$i++;
+		endforeach;
+		?>
+		<?php echo $this->form()->closeTag(); ?>
+	</div>
+</div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$('label.ui-button').click(function(e) {
+		e.preventDefault();
+		$(this).parent().find('input:checked').removeAttr('checked');
+		$(this).parent().find('input#' + $(this).attr('for')).attr('checked', 'checked');
+		var name = $(this).parent().find('input:checked').attr('name');
+		var id = name.substring(name.indexOf('[')+1, name.length-1);
+		var value = $(this).parent().find('input:checked').attr('value');
+		$.post('<?php echo $this->url('widgets', array('action' => 'set-option')) ?>', {id: id, value: value});
+	});
+});
+
+</script>
+

@@ -1,0 +1,121 @@
+<?php
+$title = 'New User';
+$this->headTitle($this->translate($title));
+
+$id = $this->id;
+$form = $this->form;
+$form->setAttribute('action', $this->url('users', array('action' => 'add')));
+$form->prepare();
+
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/users/users.css');
+
+echo $this->form()->openTag($form);
+?>
+	<div class="mdl-grid" style="margin:0 auto; margin-top:20px; max-width:1000px; display:flex!important; align-items:center!important; justify-content:center;">
+		<div class="mdl-cell mdl-cell--4-col">
+			<h4><?php echo $this->escapeHtml($this->translate($title)) ?></h4>
+			<?php echo $this->formInput($form->get('id')) ?>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formInput($form->get('name')) ?>
+				<?php echo $this->formLabel($form->get('name')) ?>
+			</div>
+			<br />
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formInput($form->get('email')) ?>
+				<?php echo $this->formLabel($form->get('email')) ?>
+			</div>
+			<br />
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formSelect($form->get('status')) ?>
+				<?php echo $this->formLabel($form->get('status')) ?>
+			</div>
+			<br />
+			
+			
+		</div>
+		<div class="mdl-cell mdl-cell--4-col" style="margin-top:50px;">
+			<div class="image-container" style="padding-top:8px; padding-bottom:8px;">
+				<img height="54" width="57" alt="<?php echo $form->get('name')->getValue() ?>" src="/images/users/guest-user-4.png" class="photo_profile mdl-shadow--2dp" id="photo_profile">
+				<span class="delete-image" id="delete-image">
+					<i class="material-icons delete-icon">create</i>
+				</span>
+				<span class="upload-image" id="upload-image">
+					<i class="material-icons change-icon">create</i>
+				</span>
+				<?php echo $this->formInput($form->get('file')) ?>
+			</div>
+		</div>
+	</div>
+	<div class="mdl-grid" style="margin:0 auto; margin-top:10px; max-width:1000px; display:flex!important; align-items:center!important; justify-content:center;">
+		<div class="mdl-cell mdl-cell--4-col">
+			<h5><?php echo $this->escapeHtml($this->translate('Access')) ?></h5>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formSelect($form->get('id_role')) ?>
+				<?php echo $this->formLabel($form->get('id_role')) ?>
+			</div>
+			<br />
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formInput($form->get('login')) ?>
+				<?php echo $this->formLabel($form->get('login')) ?>
+			</div>
+		</div>
+		<div class="mdl-cell mdl-cell--4-col" style="margin-top:70px;">
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formPassword($form->get('password')) ?>
+				<?php echo $this->formLabel($form->get('password')) ?>
+			</div>
+			<br />
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formPassword($form->get('password_confirm')) ?>
+				<?php echo $this->formLabel($form->get('password_confirm')) ?>
+			</div>
+		</div>
+	</div>
+	<div class="mdl-grid" style="margin:0 auto; margin-top:10px; max-width:1000px; display:flex!important; align-items:center!important; justify-content:center;">
+		<div class="mdl-cell mdl-cell--8-col">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="button-submit" style="float:right;">
+				  <?php echo $this->translate('Submit') ?>
+				</button>			
+		</div>
+	</div>
+<?php echo $this->form()->closeTag($form); ?>	
+<script type="text/javascript">
+
+$(function() {
+	reloadImage = function(file, message) { $('img#photo_profile').attr('src', file); };
+	return;
+});
+
+$(document).ready(function() {
+	$('#button-submit').bind('click', function(e) {
+		$('form#user').submit();
+	});
+
+	$('span#delete-image').click(function(e) {
+		$.getJSON('<?php echo $this->url('users', array('action' => 'delete-image', 'id' => $id)); ?>',
+			function(data) {
+				if(parseInt(data.status)>0) {
+					$('img#photo_profile').attr('src', '/images/users/guest-user-4.png');
+				}
+			});
+	});
+		
+	var frame = $('<iframe></iframe>').attr({'name': 'frame-upload', 'id': 'frame-upload'}).css({'display': 'none'});
+	var form = $('<form></form>').attr({'method': 'post', 'action': '<?php echo $this->url('users', array('action' => 'upload-image')); ?>', 'id': 'form-upload', 'target': 'frame-upload', 'enctype': 'multipart/form-data'}).css({'display': 'none'});
+	var inputId = $('<input>').attr({'type': 'hidden', 'name': 'id', 'id': 'id-upload'});
+    var inputFile = $('<input>').attr({'type': 'file', 'name': 'file', 'id': 'file-upload'});
+    form.append(inputId);
+    form.append(inputFile);
+    $('.mdl-layout__content').append(frame);
+    $('.mdl-layout__content').append(form);
+	$('input#file-upload').change(function(e) {
+		$('input#id-upload').val($('input#id').val());
+		$('form#form-upload').submit();
+	});
+	$('#upload-image').click(function(e) {
+		$('input#file-upload').click();
+		return false;
+	});
+	$('input[name=name]').focus();
+});
+</script>

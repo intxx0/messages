@@ -1,0 +1,40 @@
+<?php
+$title = $widget->label;
+$id =  $widget->name;
+if($widget->position) {
+	list($top, $left, $zIndex) = explode(';', $widget->position);
+	$style = "top:{$top}px; left:{$left}px; z-index:{$zIndex}";
+}
+?>
+<style type="text/css">
+.modules-list						{ padding-left:0px; padding-top:0px; height:428px; }
+/*.modules-item-box					{ margin:50px 40px auto 20px; }*/
+/*.modules-item-box					{ margin:50px auto auto auto; }*/
+/*.modules-item-box					{ margin:50px auto auto 18%; }*/
+.modules-item-box					{ margin:50px auto auto 10%; }
+.modules-item-box .icon				{ width:48px; margin:0 auto; opacity:0.5; }
+.modules-item-box .caption			{ text-align:center; text-shadow:1px 1px 1px rgba(150, 150, 150, 1); opacity:0.8; }
+</style>
+<div class="mdl-cell mdl-cell--4-col">
+	<h4><?php echo $this->escapeHtml($this->translate($title)); ?></h4>
+	<div class="mdl-grid mdl-shadow--2dp modules-list">
+		<?php foreach ($modules as $module) : ?>
+		<div class="mdl-cell mdl-cell--2-col modules-item-box">
+			<div class="icon">
+				<a href="<?php echo $this->url($module['route']) ?>" title="<?php echo $this->escapeHtml($module['name']);?>">
+        			<img src="/images/modules/<?php echo $this->escapeHtml($module['file']);?>" />
+        		</a>
+        	</div>
+        	<div class="caption">
+        		<a href="<?php echo $this->url($module['route']) ?>" title="<?php echo $this->escapeHtml($module['name']);?>">
+        			<?php echo $this->escapeHtml($this->translate($module['name']));?>
+        		</a>
+        	</div>
+        </div>
+		<?php endforeach; ?>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+});
+</script>

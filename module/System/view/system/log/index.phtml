@@ -1,0 +1,71 @@
+<?php
+$title = 'System Logs';
+$this->headTitle($this->translate($title));
+
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/system/logs.css');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/admin/mdl-dialog.css');
+$this->headScript()->appendFile($this->basePath() . '/js/admin/mdl-dialog.js');
+?>
+<div id="users-list" class="mdl-cell mdl-cell--8-col" style="margin:0 auto; margin-top:50px;">
+	<h4>
+		<?php echo $this->escapeHtml($this->translate($title)) ?>
+		<a href="<?php echo $this->url('system-logs') ?>" title="<?php echo $this->translate('Refresh') ?>">
+			<i class="material-icons add-icon">refresh</i>
+		</a>
+		<a href="<?php echo $this->url('system-logs', array('action' => 'export')) ?>" title="<?php echo $this->translate('Export') ?>">
+			<i class="material-icons export-icon">vertical_align_bottom</i>
+		</a>
+	</h4>
+	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <th class="mdl-data-table__cell--non-numeric"><?php echo $this->translate('User')?></th>
+	      <th class="mdl-disposable"><?php echo $this->translate('Module')?></th>
+	      <th class="mdl-disposable"><?php echo $this->translate('Date')?></th>
+	      <th><?php echo $this->translate('Message')?></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+		<?php foreach ($logs as $log) : ?>
+		<tr>
+			<td class="mdl-data-table__cell--non-numeric" data-id="<?php echo $log->id ?>"><?php echo !empty($log->user)?$this->escapeHtml($log->user):'[System]';?></td>
+			<td class="mdl-disposable"><?php echo $this->escapeHtml($log->module);?></td>
+			<td class="mdl-disposable"><?php echo $this->escapeHtml($log->date_time);?></td>
+			<td><?php echo $this->escapeHtml($log->message);?></td>
+		</tr>
+		<?php endforeach; ?>
+	  </tbody>
+	</table>
+ 	<?php
+ 	echo $this->paginationControl(
+    		$this->logs,
+     		'sliding',
+     		'/system/log/pagination.phtml',
+     		array(
+         		'route' => 'system-logs'
+     		)
+ 		);
+ 	?>	
+</div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$('#button-refresh').bind('click', function(e) {
+		document.location = '<?php echo $this->url('system-logs') ?>';
+	});
+	$('#button-delete').click(function(e) {
+		e.preventDefault();
+		var url = $(this).attr('data-url');
+		dialog('#dialog_delete', 'Confirmar Exclusão', 400, 250);
+		$('button#button_delete').click(function(e) {
+			document.location = url;
+		});
+		$('button#button_cancel').click(function(e) {
+			$('#dialog_delete').dialog('close');
+			$('#dialog_delete').dialog('destroy');
+		});
+		
+		return false;
+	});
+});
+</script>

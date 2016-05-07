@@ -1,0 +1,43 @@
+<?php
+$title = 'New Translation';
+$this->headTitle($this->translate($title));
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('translations', array('action' => 'add', 'language' => $idLanguage)));
+$form->prepare();
+
+?>
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formInput($form->get('id')) ?>
+	<div class="mdl-grid" style="margin:0 auto; margin-top:20px; max-width:1000px; display:flex!important; align-items:center!important; justify-content:center;">
+		<div class="mdl-cell mdl-cell--4-col">
+			<h4><?php echo $this->escapeHtml($this->translate($title)) ?></h4>
+			<?php echo $this->formInput($form->get('id')) ?>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formTextarea($form->get('from')) ?>
+				<?php echo $this->formLabel($form->get('from')) ?>
+			</div>
+		</div>
+		<div class="mdl-cell mdl-cell--4-col" style="margin-top:80px;">
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<?php echo $this->formTextarea($form->get('to')) ?>
+				<?php echo $this->formLabel($form->get('to')) ?>
+			</div>
+		</div>
+	</div>
+	<div class="mdl-grid" style="margin:0 auto; margin-top:10px; max-width:1000px; display:flex!important; align-items:center!important; justify-content:center;">
+		<div class="mdl-cell mdl-cell--8-col">
+				<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="button-submit" style="float:right;">
+				  <?php echo $this->translate('Submit') ?>
+				</button>			
+		</div>
+	</div>
+<?php echo $this->form()->closeTag($form); ?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#button-submit').bind('click', function(e) {
+		$('form#role').submit();
+	});
+	$('input[name=name]').focus();
+});
+</script>
