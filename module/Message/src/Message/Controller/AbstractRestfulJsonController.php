@@ -2,8 +2,8 @@
 /**
  * File for Messages Controller Class
  *
- * @category  Messages
- * @package   Messages_Controller
+ * @category  Message
+ * @package   Message_Controller
  * @author    Osvaldo Souza <osvaldo@extendtecnologia.com.br>
  * @copyright Copyright (c) 2016  Extend Tecnologia
  */

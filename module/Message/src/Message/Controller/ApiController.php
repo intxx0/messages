@@ -2,7 +2,7 @@
 /**
  * File for API Controller Class
  *
- * @category  Messages
+ * @category  Message
  * @package   Api_Controller
  * @author    Osvaldo Souza <osvaldo@extendtecnologia.com.br>
  * @copyright Copyright (c) 2016  Extend Tecnologia
@@ -67,7 +67,6 @@ class ApiController extends AbstractRestfulJsonController
         	$type = 'Message';
         } else {
         	$errors = $form->getMessages();
-        	//print_r($errors); exit();
         	foreach($errors as $element => $error) {
 	        	foreach($errors[$element] as $key => $value) {
 	        		$data[] = array(
@@ -77,7 +76,6 @@ class ApiController extends AbstractRestfulJsonController
 	        		);
 	        	}
         	}
-        	print_r($data); exit();
         	$status = 'error';
         	$type = 'Error';
         }
